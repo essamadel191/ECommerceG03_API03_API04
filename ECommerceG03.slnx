@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ECommerceG03.Application/ECommerceG03.Application.csproj" />
+  <Project Path="ECommerceG03.Domain/ECommerceG03.Domain.csproj" />
+  <Project Path="ECommerceG03.Infrastructure/ECommerceG03.Infrastructure.csproj" />
+  <Project Path="ECommerceG03/ECommerceG03.csproj" />
+</Solution>

@@ -1,0 +1,9 @@
+@ECommerceG03_HostAddress = http://localhost:5035
+
+GET {{ECommerceG03_HostAddress}}/weatherforecast/
+Accept: application/json
+###
+
+GET {{ECommerceG03_HostAddress}}/api/Product/
+Accept: application/json
+###
