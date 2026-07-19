@@ -12,6 +12,10 @@ namespace ECommerceG03.Domain.Contracts
         void Remove(TEntity entity);
 
         Task<TEntity?> GetByIdAsync(Tkey id,CancellationToken ct = default);
+        Task<TEntity?> GetByIdAsync(Tkey id, ISpecification<TEntity, Tkey> specification, CancellationToken ct = default);
         Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken ct = default);
+
+        // Get all entities based on a specification
+        Task<IReadOnlyList<TEntity>> GetAllAsync(ISpecification<TEntity, Tkey> specification, CancellationToken ct = default);
     }
 }

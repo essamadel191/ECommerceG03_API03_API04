@@ -1,6 +1,7 @@
 ﻿using ECommerceG03.Domain.Contracts;
 using ECommerceG03.Domain.Entities;
 using ECommerceG03.Infrastructure.Data;
+using ECommerceG03.Infrastructure.Specification;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,5 +26,22 @@ namespace ECommerceG03.Infrastructure.Repository
         public void Add(TEntity entity)=> _dbContext.Set<TEntity>().Add(entity);
         public void Update(TEntity entity)=> _dbContext.Set<TEntity>().Update(entity);
         public void Remove(TEntity entity)=> _dbContext.Set<TEntity>().Remove(entity);
+
+        public async Task<IReadOnlyList<TEntity>> GetAllAsync(ISpecification<TEntity, TKey> specification, CancellationToken ct = default)
+        {
+            var query = SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specification);
+
+            // 4. Execute query
+            return await query.ToListAsync(ct);
+        }
+
+        public async Task<TEntity?> GetByIdAsync(TKey id, ISpecification<TEntity, TKey> specification, CancellationToken ct = default)
+        {
+            var query = SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specification);
+
+            // 4. Execute query
+            return await query.FirstOrDefaultAsync(ct);
+        }
     }
 }
+

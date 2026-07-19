@@ -20,11 +20,15 @@ namespace ECommerceG03.Controllers
         /// BaseURL/api/product
         /// </summary>
         /// <param name="ct" optional="true">Cancellation token</param>
+        /// <param name="brandId" optional="true">Brand Id</param>
+        /// <param name="typeId" optional="true">Type Id</param>
+        /// <param name="search" optional="true">Search term</param>
+        /// <param name="sort" optional="true" value="{0:None,1:NameAsc,2:NameDesc,3:PriceAsc,4:PriceDesc}"></param>
         /// <returns>List of products</returns>
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetAllProducts(CancellationToken ct = default)
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetAllProducts([FromQuery] ProductQueryParams queryParams, CancellationToken ct = default)
         {
-            var result = await _productService.GetAllProductsAsync(ct);
+            var result = await _productService.GetAllProductsAsync(queryParams, ct);
             return ToActionResult(result);
         }
 

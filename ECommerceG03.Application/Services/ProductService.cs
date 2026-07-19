@@ -2,6 +2,7 @@
 using ECommerceG03.Application.Common;
 using ECommerceG03.Application.Contracts;
 using ECommerceG03.Application.DTOs.ProductDtos;
+using ECommerceG03.Application.Specification;
 using ECommerceG03.Domain.Contracts;
 using ECommerceG03.Domain.Entities.Products;
 
@@ -15,18 +16,26 @@ namespace ECommerceG03.Application.Services
         public ProductService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;   
+            _mapper = mapper;
         }
         public async Task<Result<IReadOnlyList<BrandDto>>> GetAllBrandAsync(CancellationToken ct = default)
         {
             var brands = await _unitOfWork.GetRepository<ProductBrand, int>().GetAllAsync(ct);
-            
+
             return Result<IReadOnlyList<BrandDto>>.Ok(_mapper.Map<IReadOnlyList<BrandDto>>(brands));
         }
 
-        public async Task<Result<IReadOnlyList<ProductDto>>> GetAllProductsAsync(CancellationToken ct = default)
+        //public async Task<Result<IReadOnlyList<ProductDto>>> GetAllProductsAsync(CancellationToken ct = default)
+        //{
+        //    var specification = new ProductWihtBrandAndTypeSpec();
+        //    var products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(specification, ct);
+
+        //    return Result<IReadOnlyList<ProductDto>>.Ok(_mapper.Map<IReadOnlyList<ProductDto>>(products));
+        //}
+        public async Task<Result<IReadOnlyList<ProductDto>>> GetAllProductsAsync(ProductQueryParams queryParams, CancellationToken ct = default)
         {
-            var products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(ct);
+            var specification = new ProductWihtBrandAndTypeSpec(queryParams);
+            var products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(specification, ct);
 
             return Result<IReadOnlyList<ProductDto>>.Ok(_mapper.Map<IReadOnlyList<ProductDto>>(products));
         }
@@ -39,8 +48,9 @@ namespace ECommerceG03.Application.Services
 
         public async Task<Result<ProductDto>> GetProductByIdAsync(int productId, CancellationToken ct = default)
         {
-            var product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(productId, ct);
-            if(product == null)
+            var specification = new ProductWihtBrandAndTypeSpec(productId);
+            var product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(productId, specification, ct);
+            if (product == null)
             {
                 return Result<ProductDto>.Fail(Error.NotFound("Product.NotFound", $"Product with ID {productId} not found."));
             }
