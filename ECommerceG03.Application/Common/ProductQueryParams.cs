@@ -12,15 +12,15 @@ namespace ECommerceG03.Application.Common
 
         public ProductSortOptions sort { get; set; } = ProductSortOptions.None;
 
-        private const int maxPageSize = 10;
+        private const int maxPageSize = 20;
         private const int minPageSize = 5;
 
         public int pageIndex { get; set; } = 1;
-        private int pageSize;
+        private int? pageSize;
 
         public int PageSize
         {
-            get => pageSize;
+            get => pageSize ?? maxPageSize;
             set => pageSize = value > maxPageSize ? maxPageSize : (value < 1 ? minPageSize : value);
         }
 

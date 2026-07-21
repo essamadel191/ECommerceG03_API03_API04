@@ -42,6 +42,10 @@ namespace ECommerceG03.Infrastructure.Repository
             // 4. Execute query
             return await query.FirstOrDefaultAsync(ct);
         }
+
+        public async Task<int> CountAsync(ISpecification<TEntity, TKey> specification, CancellationToken ct = default)
+        {
+            return await SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specification).CountAsync(ct);
+        }
     }
 }
-

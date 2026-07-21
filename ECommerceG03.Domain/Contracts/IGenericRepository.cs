@@ -17,5 +17,8 @@ namespace ECommerceG03.Domain.Contracts
 
         // Get all entities based on a specification
         Task<IReadOnlyList<TEntity>> GetAllAsync(ISpecification<TEntity, Tkey> specification, CancellationToken ct = default);
+
+        // Count
+        Task<int> CountAsync(ISpecification<TEntity, Tkey> specification, CancellationToken ct = default);
     }
 }
